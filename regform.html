@@ -1,0 +1,430 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Registration — Personal Details</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html { font-size: 16px; }
+
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+    min-height: 100vh;
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+    background-color: #ffffff;
+    color: #0a0a0a;
+    padding: 3rem 1.5rem;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  .form-wrap {
+    width: 100%;
+    max-width: 460px;
+  }
+
+  .brand {
+    font-size: 0.95rem;
+    font-weight: 600;
+    letter-spacing: -0.01em;
+    margin-bottom: 2.5rem;
+  }
+
+  h1 {
+    font-size: 1.5rem;
+    font-weight: 600;
+    letter-spacing: -0.02em;
+    margin-bottom: 0.4rem;
+  }
+
+  .subtitle {
+    font-size: 0.9rem;
+    color: #737373;
+    margin-bottom: 2rem;
+  }
+
+  fieldset {
+    border: none;
+    margin-bottom: 1.75rem;
+  }
+
+  legend {
+    font-size: 0.78rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    color: #a3a3a3;
+    margin-bottom: 1rem;
+    padding: 0;
+  }
+
+  .two-col {
+    display: flex;
+    gap: 0.75rem;
+  }
+  .two-col .field-group { flex: 1; }
+
+  .field-group {
+    margin-bottom: 1.25rem;
+  }
+
+  .field-group label {
+    display: block;
+    font-size: 0.82rem;
+    font-weight: 500;
+    color: #404040;
+    margin-bottom: 0.45rem;
+  }
+
+  .optional-tag {
+    font-weight: 400;
+    color: #a3a3a3;
+  }
+
+  input[type="text"],
+  input[type="email"],
+  input[type="password"],
+  input[type="tel"],
+  input[type="date"],
+  input[type="number"],
+  select,
+  textarea {
+    width: 100%;
+    padding: 0.65rem 0.8rem;
+    font-size: 0.92rem;
+    border: 1px solid #e0e0e0;
+    border-radius: 6px;
+    font-family: inherit;
+    background-color: #fff;
+    transition: border-color 0.15s ease;
+  }
+
+  input::placeholder, textarea::placeholder { color: #b3b3b3; }
+
+  input:focus, select:focus, textarea:focus {
+    outline: none;
+    border-color: #0a0a0a;
+  }
+
+  input:invalid:not(:placeholder-shown) {
+    border-color: #d33;
+  }
+
+  .error-text {
+    display: none;
+    font-size: 0.76rem;
+    color: #d33;
+    margin-top: 0.4rem;
+  }
+  input:invalid:not(:placeholder-shown) ~ .error-text {
+    display: block;
+  }
+
+  .hint-text {
+    font-size: 0.76rem;
+    color: #a3a3a3;
+    margin-top: 0.4rem;
+  }
+
+  textarea { resize: vertical; min-height: 80px; }
+
+  select {
+    appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath d='M0 0l5 6 5-6z' fill='%23737373'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 0.8rem center;
+    padding-right: 2rem;
+  }
+
+  /* ---- radio group (gender) ---- */
+  .radio-group {
+    display: flex;
+    gap: 1.25rem;
+  }
+  .radio-option {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    font-size: 0.88rem;
+    color: #262626;
+  }
+  .radio-option input {
+    width: 15px;
+    height: 15px;
+    cursor: pointer;
+    accent-color: #0a0a0a;
+  }
+  .radio-option label { cursor: pointer; }
+
+  /* ---- range (notification frequency) ---- */
+  .range-wrapper {
+    padding: 0.4rem 0.2rem 0 0.2rem;
+  }
+  input[type="range"] {
+    width: 100%;
+    accent-color: #0a0a0a;
+  }
+  .range-labels {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.72rem;
+    color: #a3a3a3;
+    margin-top: 0.3rem;
+  }
+
+  /* ---- file upload (profile photo) ---- */
+  .file-upload {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+  }
+  .file-preview {
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    background-color: #f0f0f0;
+    border: 1px solid #e0e0e0;
+    flex-shrink: 0;
+    background-size: cover;
+    background-position: center;
+  }
+  .file-upload label.file-btn {
+    display: inline-block;
+    font-size: 0.82rem;
+    font-weight: 500;
+    color: #262626;
+    border: 1px solid #e0e0e0;
+    border-radius: 6px;
+    padding: 0.5rem 0.9rem;
+    cursor: pointer;
+    transition: border-color 0.15s ease, background-color 0.15s ease;
+    margin-bottom: 0;
+  }
+  .file-upload label.file-btn:hover { background-color: #fafafa; border-color: #b3b3b3; }
+  .file-upload input[type="file"] {
+    position: absolute;
+    width: 1px; height: 1px;
+    overflow: hidden;
+    clip: rect(0,0,0,0);
+  }
+
+  /* ---- checkboxes ---- */
+  .checkbox-row {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.5rem;
+    margin-bottom: 0.9rem;
+  }
+  .checkbox-row input {
+    width: 14px;
+    height: 14px;
+    margin-top: 3px;
+    cursor: pointer;
+    accent-color: #0a0a0a;
+    flex-shrink: 0;
+  }
+  .checkbox-row label {
+    font-size: 0.83rem;
+    color: #404040;
+    line-height: 1.4;
+    cursor: pointer;
+  }
+  .checkbox-row a {
+    color: #0a0a0a;
+    text-decoration: none;
+    border-bottom: 1px solid #0a0a0a;
+  }
+
+  .btn-submit {
+    width: 100%;
+    background-color: #0a0a0a;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    padding: 0.75rem;
+    font-size: 0.92rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background-color 0.15s ease;
+  }
+  .btn-submit:hover { background-color: #262626; }
+
+  a:focus-visible, button:focus-visible, input:focus-visible, select:focus-visible, textarea:focus-visible {
+    outline: 2px solid #0a0a0a;
+    outline-offset: 2px;
+  }
+
+  @media (max-width: 400px) {
+    .two-col { flex-direction: column; gap: 0; }
+    .radio-group { gap: 1rem; }
+  }
+</style>
+</head>
+<body>
+
+  <main class="form-wrap">
+    <div class="brand">ShoeStore</div>
+    <h1>Create your profile</h1>
+    <p class="subtitle">Tell us a bit about yourself</p>
+
+    <form novalidate id="regForm">
+
+      <!-- ============ PERSONAL DETAILS ============ -->
+      <fieldset>
+        <legend>Personal Details</legend>
+
+        <div class="two-col">
+          <div class="field-group">
+            <label for="firstname">First name</label>
+            <input type="text" id="firstname" name="firstname" placeholder="Juan" autocomplete="given-name" required>
+          </div>
+          <div class="field-group">
+            <label for="lastname">Last name</label>
+            <input type="text" id="lastname" name="lastname" placeholder="Dela Cruz" autocomplete="family-name" required>
+          </div>
+        </div>
+
+        <div class="field-group">
+          <label for="dob">Date of birth</label>
+          <input type="date" id="dob" name="dob" required>
+        </div>
+
+        <div class="field-group">
+          <label>Gender</label>
+          <div class="radio-group">
+            <div class="radio-option">
+              <input type="radio" name="gender" id="gender-male" value="male">
+              <label for="gender-male">Male</label>
+            </div>
+            <div class="radio-option">
+              <input type="radio" name="gender" id="gender-female" value="female">
+              <label for="gender-female">Female</label>
+            </div>
+            <div class="radio-option">
+              <input type="radio" name="gender" id="gender-other" value="other">
+              <label for="gender-other">Other</label>
+            </div>
+          </div>
+        </div>
+
+        <div class="field-group">
+          <label for="profile-photo">Profile photo <span class="optional-tag">(optional)</span></label>
+          <div class="file-upload">
+            <div class="file-preview" id="filePreview"></div>
+            <label for="profile-photo" class="file-btn">Choose file</label>
+            <input type="file" id="profile-photo" name="photo" accept="image/*">
+          </div>
+        </div>
+      </fieldset>
+
+      <!-- ============ CONTACT INFO ============ -->
+      <fieldset>
+        <legend>Contact Information</legend>
+
+        <div class="field-group">
+          <label for="email">Email</label>
+          <input type="email" id="email" name="email" placeholder="you@email.com" autocomplete="email" required aria-describedby="email-error">
+          <span class="error-text" id="email-error">Enter a valid email address.</span>
+        </div>
+
+        <div class="field-group">
+          <label for="phone">Mobile number</label>
+          <input type="tel" id="phone" name="phone" placeholder="0917 123 4567" autocomplete="tel" pattern="[0-9 ]{7,}" required aria-describedby="phone-error">
+          <span class="error-text" id="phone-error">Enter a valid phone number.</span>
+        </div>
+
+        <div class="field-group">
+          <label for="country">Country</label>
+          <select id="country" name="country" required>
+            <option value="">Select your country</option>
+            <option value="PH" selected>Philippines</option>
+            <option value="US">United States</option>
+            <option value="SG">Singapore</option>
+            <option value="JP">Japan</option>
+            <option value="other">Other</option>
+          </select>
+        </div>
+      </fieldset>
+
+      <!-- ============ ACCOUNT SECURITY ============ -->
+      <fieldset>
+        <legend>Account Security</legend>
+
+        <div class="field-group">
+          <label for="password">Password</label>
+          <input type="password" id="password" name="password" placeholder="••••••••" autocomplete="new-password" required minlength="8" aria-describedby="password-hint">
+          <div class="hint-text" id="password-hint">Minimum 8 characters</div>
+        </div>
+      </fieldset>
+
+      <!-- ============ PREFERENCES ============ -->
+      <fieldset>
+        <legend>Preferences</legend>
+
+        <div class="field-group">
+          <label for="notif-frequency">Notification frequency: <span id="rangeVal">Weekly</span></label>
+          <div class="range-wrapper">
+            <input type="range" id="notif-frequency" name="frequency" min="0" max="2" step="1" value="1">
+            <div class="range-labels"><span>Daily</span><span>Weekly</span><span>Never</span></div>
+          </div>
+        </div>
+
+        <div class="field-group">
+          <label for="bio">About you <span class="optional-tag">(optional)</span></label>
+          <textarea id="bio" name="bio" rows="3" placeholder="Tell us about your style preferences..."></textarea>
+        </div>
+      </fieldset>
+
+      <!-- ============ AGREEMENTS ============ -->
+      <div class="checkbox-row">
+        <input type="checkbox" id="agree-terms" name="terms" required>
+        <label for="agree-terms">I agree to the <a href="#">Terms of Service</a> and <a href="#">Privacy Policy</a></label>
+      </div>
+      <div class="checkbox-row">
+        <input type="checkbox" id="newsletter" name="newsletter">
+        <label for="newsletter">Send me promos and restock alerts</label>
+      </div>
+
+      <button type="submit" class="btn-submit" style="margin-top:0.5rem;">Create Account</button>
+    </form>
+  </main>
+
+  <script>
+    // profile photo preview
+    const photoInput = document.getElementById('profile-photo');
+    const filePreview = document.getElementById('filePreview');
+    photoInput.addEventListener('change', () => {
+      const file = photoInput.files[0];
+      if (file) {
+        const reader = new FileReader();
+        reader.onload = (e) => {
+          filePreview.style.backgroundImage = `url(${e.target.result})`;
+        };
+        reader.readAsDataURL(file);
+      }
+    });
+
+    // range label
+    const rangeInput = document.getElementById('notif-frequency');
+    const rangeVal = document.getElementById('rangeVal');
+    const rangeLabels = ['Daily', 'Weekly', 'Never'];
+    rangeInput.addEventListener('input', () => {
+      rangeVal.textContent = rangeLabels[rangeInput.value];
+    });
+
+    // demo submit
+    const form = document.getElementById('regForm');
+    form.addEventListener('submit', (e) => {
+      e.preventDefault();
+      if (form.checkValidity()) {
+        alert('Account created! (this is just a template demo)');
+      } else {
+        form.reportValidity();
+      }
+    });
+  </script>
+
+</body>
+</html>
